@@ -8,12 +8,12 @@ const { configLoader } = require("./loadConfig");
 const localConfig = parseBoolean(process.env.localConfig);
 const SERVER_TYPE = process.env.SERVER_TYPE;
 
-const insertSession = (session) => {
-  cache.set("jm_" + session.transaction_id, session, 86400);
+const insertSession = async (session) => {
+  await cache.set(session.transaction_id, session, 86400);
 };
 
-const getSession = (transaction_id) => {
-  return cache.get("jm_" + transaction_id);
+const getSession = async (transaction_id) => {
+  return await cache.get(transaction_id);
 };
 
 function loadConfig() {
@@ -33,7 +33,6 @@ function loadConfig() {
         const build_spec = configLoader.getConfig();
 
         resolve(build_spec[SERVER_TYPE]);
-        // resolve()
       }
     } catch (e) {
       throw new Error(e);
@@ -44,6 +43,7 @@ function loadConfig() {
 const getConfigBasedOnFlow = async (flowId) => {
   return new Promise(async (resolve, reject) => {
     try {
+      
       this.config = await loadConfig();
 
       let filteredProtocol = null;
@@ -126,9 +126,32 @@ async function generateSession(session_body) {
       api: filteredApi,
     };
 
-    insertSession(session);
+    await insertSession(session);
     resolve(true);
   });
 }
 
-module.exports = { generateSession, getSession, insertSession };
+const findSession = async (body) => {
+  try {
+    let session = null;
+    const allSessions = await cache.get();
+    console.log("allSessions", allSessions);
+
+    for (const ses of allSessions) {
+      const sessionData = await getSession(ses);
+      console.log("sessionDat", sessionData.transactionIds);
+      if (sessionData.transactionIds.includes(body.context.transaction_id)) {
+        console.log("<got session>");
+        session = sessionData;
+        break;
+      }
+    }
+
+    return session;
+  } catch (error) {
+    console.error("Error finding session:", error);
+    throw error;
+  }
+};
+
+module.exports = { generateSession, getSession, insertSession, findSession };

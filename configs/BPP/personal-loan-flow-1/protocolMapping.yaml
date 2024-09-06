@@ -1,0 +1,102 @@
+protocol:
+  search:
+    sessionData:
+      - business_key: bap_id
+        extractionPath: context.bap_id
+      - business_key: bap_uri
+        extractionPath: context.bap_uri
+      - business_key: cityCode
+        extractionPath: context.location.city.code || session.cityCode
+      - business_key: countryCode
+        extractionPath: context.location.country.code || session.countryCode
+
+    mapping:
+      - business_key: context.domain
+        extractionPath: session.domain
+      - business_key: context.version
+        extractionPath: session.version
+      - business_key: context.transaction_id
+        extractionPath: session.transaction_id
+      - business_key: context.message_id
+        extractionPath: context.message_id
+      - business_key: context.bap_id
+        extractionPath: session.bap_id
+      - business_key: context.bap_uri
+        extractionPath: session.bap_uri
+      - business_key: context.action
+        extractionPath: context.action
+      - business_key: context.location.city.code
+        extractionPath: session.cityCode
+      - business_key: context.location.country.code
+        extractionPath: session.countryCode
+      - business_key: context.ttl
+        extractionPath: context.ttl
+
+      - business_key: message.intent.category.descriptor.code
+        extractionPath: message.intent.category.descriptor.code
+
+
+  on_search:
+    mapping:
+      - beckn_key: context.bap_id
+        value: session.bap_id
+      - beckn_key: context.bap_uri
+        value: session.bap_uri
+      - beckn_key: context.bpp_id
+        value: session.bpp_id
+      - beckn_key: context.bpp_uri
+        value: session.bpp_uri
+      - beckn_key: context.location.country.code
+        value: session.country
+      - beckn_key: context.location.city.code
+        value: session.cityCode
+      - beckn_key: context.transaction_id
+        value: session.currentTransactionId
+      - beckn_key: context.message_id
+        value: data.context.message_id
+      - beckn_key: context.timestamp
+        value: timestamp
+      - beckn_key: context.domain
+        value: session.domain
+      - beckn_key: context.version
+        value: session.version
+      - beckn_key: context.ttl
+        value: session.ttl
+      - beckn_key: context.action
+        value: action
+
+      - beckn_key: message.catalog.descriptor.name
+        value: data.name
+
+      - beckn_key: message.catalog.providers[0].id
+        value: data.loan_provider_id            ||  session.loan_provider_id
+
+      - beckn_key: message.catalog.providers[0].descriptor
+        value: data.loan_provider        ||  session.loan_provider
+        
+
+      - beckn_key: message.catalog.descriptor.name
+        value: data.name          ||  session.loan_provider.name
+
+      - beckn_key: message.catalog.providers[0].categories[0].id
+        value: data.category_id
+      - beckn_key: message.catalog.providers[0].categories[0].descriptor
+        value: data.loan_type         || session.loan_type
+
+      - beckn_key: message.catalog.providers[0].items
+        value: data.loan_offers
+      - beckn_key: message.catalog.providers[0].payments[0].tags
+        value: data.payments_tags       || session.payment_tags
+        compute: buildTags(data.payments_tags || session.payment_tags)
+      - beckn_key: message.catalog.providers[0].tags
+        value: data.tags                || session.tags
+        compute: buildTags(data.tags    || session.tags)
+
+      - beckn_key: message.catalog.providers[0].payments[0].collected_by
+        value: data.payment_collectedby || session.collectedBy
+
+      - beckn_key: message
+        value: data.error && data.message
+
+      - beckn_key: error
+        value: data.error

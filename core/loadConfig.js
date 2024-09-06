@@ -1,6 +1,11 @@
 const axios = require("axios");
-
+const { parseBoolean } = require("../utils/utils");
 const SERVER_TYPE = process.env.SERVER_TYPE;
+const localConfig = parseBoolean(process.env.localConfig);
+const fs = require("fs");
+const yaml = require("yaml");
+const path = require("path");
+const $RefParser = require("@apidevtools/json-schema-ref-parser");
 
 class ConfigLoader {
   constructor() {
@@ -9,17 +14,35 @@ class ConfigLoader {
 
   async init() {
     try {
-      const url = process.env.config_url;
+      if (localConfig) {
+        const config = yaml.parse(
+          fs.readFileSync(path.join(__dirname, "../configs/index.yaml"), "utf8")
+        );
 
-      if (!url) {
-        throw new Error("Config url not found");
+        const schema = await $RefParser.dereference(config);
+
+      this.config = schema;
+
+        return;
+      } else {
+        const url = process.env.config_url;
+
+        if (!url) {
+          throw new Error("Config url not found");
+        }
+
+        const response = await axios.get(url);
+
+        if (response.data.version !== process.env.VERSION) {
+          throw new Error(
+            `Config version mismatch: Config version - ${response.data.version}, App version - ${process.env.VERSION}`
+          );
+        }
+
+        this.config = response.data;
+
+        return response.data;
       }
-
-      const response = await axios.get(url);
-
-      this.config = response.data;
-
-      return response.data;
     } catch (e) {
       throw new Error(e);
     }
@@ -29,21 +52,8 @@ class ConfigLoader {
     return this.config;
   }
 
-  getSchema(configName) {
-    if (!SERVER_TYPE) {
-      throw new Error("SERVER_TYPE not found");
-    }
-
-    let schema = null;
-
-    this.config[SERVER_TYPE].flows?.forEach((flow) => {
-      if (flow.id === configName) {
-        schema = flow.schema;
-        return;
-      }
-    });
-
-    return schema;
+  getSchema() {
+    return this.config.schema;
   }
 
   getMapping(configName) {
