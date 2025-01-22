@@ -379,7 +379,7 @@ const extractData = (
   }
 };
 
-const createBusinessPayload = (myconfig: any, obj: any) => {
+const createBusinessPayload = (myconfig: any, obj: any,session: any) => {
   const payload = {};
 
   try {
@@ -436,14 +436,14 @@ export const extractBusinessData = (
   protocol: any
 ) => {
   if (protocol.sessionData) {
-    const parsedSchema = createBusinessPayload(protocol.sessionData, payload);
+    const parsedSchema = createBusinessPayload(protocol.sessionData, payload,session);
 
     console.log("parsedSchaems", parsedSchema);
 
     session = { ...session, ...parsedSchema };
   }
 
-  const result = createBusinessPayload(protocol.mapping, payload) as any;
+  const result = createBusinessPayload(protocol.mapping, payload,session) as any;
 
   return { result, session };
 };

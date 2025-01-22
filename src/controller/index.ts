@@ -394,7 +394,8 @@ export const businessToBecknMethod = async (body: any, logID: any) => {
     } else {
       url =
         SERVER_TYPE === "BPP"
-          ? becknPayload.context.bap_uri
+          ? session.dualmode ? session.url 
+            : becknPayload.context.bap_uri
           : becknPayload.context.bpp_uri;
     }
 
