@@ -54,10 +54,13 @@ const validateIncommingRequest = async (req, transaction_id, config, res) => {
       session = getSession(transaction_id);
 
       const configObject = configLoader.getConfig();
-      configName = dynamicFlow(
-        body,
-        configObject[SERVER_TYPE]["flow_selector"][config]
-      );
+
+      if (!session?.configName) {
+        var configName = dynamicFlow(
+          body,
+          configObject[SERVER_TYPE]["flow_selector"][config]
+        );
+      }
 
       if (!session) {
         await generateSession({
