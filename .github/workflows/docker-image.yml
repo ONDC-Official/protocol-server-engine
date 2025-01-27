@@ -16,13 +16,13 @@ jobs:
 
       - name: SSH Setup and Cloning Repository
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY_RSF }}" > ./key.pem
           chmod 600 ./key.pem
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.RSF_SSH_HOST }} >> ~/.ssh/known_RSF_SSH_HOSTs
 
-          ssh -i ./key.pem ${{ secrets.USER }}@${{ secrets.HOST }} -T <<EOF
-          REPO_DIR=~/mock/Protocol-Server-SDK-igm/protocol-server-engine-new
+          ssh -i ./key.pem ${{ secrets.RSF_SSH_USER }}@${{ secrets.RSF_SSH_HOST }} -T <<EOF
+          REPO_DIR=~/mock/Protocol-Server-SDK-igm-staging/protocol-server-engine
           echo "Removing existing repository directory if exists"
           rm -rf \$REPO_DIR
           echo "Cloning repository from main branch"
@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Docker Compose (if not installed)
         run: |
-          ssh -i ./key.pem ${{ secrets.USER }}@${{ secrets.HOST }} <<EOF
+          ssh -i ./key.pem ${{ secrets.RSF_SSH_USER }}@${{ secrets.RSF_SSH_HOST }} <<EOF
           # Check if Docker Compose is installed
           if ! command -v docker-compose &> /dev/null
           then
@@ -46,52 +46,66 @@ jobs:
       - name: Write secrets to .env on EC2
         run: |
           echo "Writing secrets to .env file"
-          ssh -i ./key.pem ${{ secrets.USER }}@${{ secrets.HOST }} <<EOF
-          REPO_DIR=~/mock/Protocol-Server-SDK-igm/protocol-server-engine-new
+          ssh -i ./key.pem ${{ secrets.RSF_SSH_USER }}@${{ secrets.RSF_SSH_HOST }} <<EOF
+          REPO_DIR=~/mock/Protocol-Server-SDK-igm-staging/protocol-server-engine
           echo "Writing environment variables to .env file"
+          
           echo "private_key=${{ secrets.PRIVATE_KEY }}" >> \$REPO_DIR/.env
-          echo "REDIS_HOST=${{ vars.AHSAN }}" >> \$REPO_DIR/.env
-          # echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> \$REPO_DIR/.env
-          # echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> \$REPO_DIR/.env
-          # echo "PORT=${{ secrets.PORT }}" >> \$REPO_DIR/.env
-          # echo "API_SERVICE_LAYER=${{ secrets.API_SERVICE_LAYER }}" >> \$REPO_DIR/.env
+          echo "PORT=${{ vars.PORT }}" >> \$REPO_DIR/.env
+          echo "BUSINESS_SERVER_IS_SYNC=${{ vars.BUSINESS_SERVER_IS_SYNC }}" >> \$REPO_DIR/.env
+          echo "IS_VERIFY_AUTH=${{ vars.IS_VERIFY_AUTH }}" >> \$REPO_DIR/.env
+          echo "SERVER_TYPE=${{ vars.SERVER_TYPE }}" >> \$REPO_DIR/.env
+          
+          echo "SUBSCRIBER_URL=${{ vars.SUBSCRIBER_URL }}" >> \$REPO_DIR/.env
+          echo "BACKEND_SERVER_URL=${{ vars.BACKEND_SERVER_URL }}" >> \$REPO_DIR/.env
+          echo "GATEWAY_URL=${{ vars.GATEWAY_URL }}" >> \$REPO_DIR/.env
+          echo "PROTOCOL_SERVER=${{ vars.PROTOCOL_SERVER }}" >> \$REPO_DIR/.env
+          
+          echo "localConfig=${{ vars.localConfig }}" >> \$REPO_DIR/.env
+          echo "USE_DB=${{ vars.USE_DB }}" >> \$REPO_DIR/.env
+          echo "SUBSCRIBER_ID=${{ vars.SUBSCRIBER_ID }}" >> \$REPO_DIR/.env
+          echo "SUBSCRIBER_UNIQUE_KEY=${{ vars.SUBSCRIBER_UNIQUE_KEY }}" >> \$REPO_DIR/.env
+                  
           EOF
 
-      # - name: Verify .env and docker-compose.yml files
-      #   run: |
-      #     ssh -i ./key.pem ${{ secrets.USER }}@${{ secrets.HOST }} <<EOF
-      #     REPO_DIR=~/ONDC-automation-framework/automation-mock-service
-      #     # Check if .env and docker-compose.yml files exist
-      #     if [ ! -f \$REPO_DIR/.env ]; then
-      #       echo ".env file not found in \$REPO_DIR!"
-      #       exit 1
-      #     fi
-      #     if [ ! -f \$REPO_DIR/docker-compose.yml ]; then
-      #       echo "docker-compose.yml file not found in \$REPO_DIR!"
-      #       exit 1
-      #     fi
-      #     echo ".env and docker-compose.yml files found."
-      #     EOF
+      - name: Verify .env and docker-compose.yml files
+        run: |
+          ssh -i ./key.pem ${{ secrets.RSF_SSH_USER }}@${{ secrets.RSF_SSH_HOST }} <<EOF
+          REPO_DIR=~/mock/Protocol-Server-SDK-igm-staging/protocol-server-engine
+          # Check if .env and docker-compose.yml files exist
+          if [ ! -f \$REPO_DIR/.env ]; then
+            echo ".env file not found in \$REPO_DIR!"
+            exit 1
+          fi
+          if [ ! -f \$REPO_DIR/docker-compose.yml ]; then
+            echo "docker-compose.yml file not found in \$REPO_DIR!"
+            exit 1
+          fi
+          echo ".env and docker-compose.yml files found."
+          EOF
 
-      # - name: Automation Mock Server Deployment
-      #   run: |
-      #     echo "Deploying with Docker Compose"
-      #     ssh -i ./key.pem ${{ secrets.USER }}@${{ secrets.HOST }} <<EOF
-      #     REPO_DIR=~/ONDC-automation-framework/automation-mock-service
-      #     cd \$REPO_DIR
 
-      #     # Ensure the .env and docker-compose.yml files exist
-      #     if [ ! -f .env ]; then
-      #       echo ".env file not found!"
-      #       exit 1
-      #     fi
+      - name: Igm Protocol Server Deployment
+        run: |
+          echo "Deploying with Docker Compose"
+          ssh -i ./key.pem ${{ secrets.RSF_SSH_USER }}@${{ secrets.RSF_SSH_HOST }} <<EOF
+          REPO_DIR=~/mock/Protocol-Server-SDK-igm-staging
+          echo "PROTOCOL_SERVER_ENGINE_PORT=5203" >> \$REPO_DIR/.env
 
-      #     if [ ! -f docker-compose.yml ]; then
-      #       echo "docker-compose.yml file not found!"
-      #       exit 1
-      #     fi
+          cd \$REPO_DIR
 
-      #     # Start the containers using Docker Compose
-      #     echo "Running docker-compose up -d --build"
-      #     sudo docker compose up -d --build
-          # EOF
+          # Ensure the .env and docker-compose.yml files exist
+          if [ ! -f .env ]; then
+            echo ".env file not found!"
+            exit 1
+          fi
+
+          if [ ! -f docker-compose.yml ]; then
+            echo "docker-compose.yml file not found!"
+            exit 1
+          fi
+
+          # Start the containers using Docker Compose
+          echo "Running docker-compose up -d --build"
+          sudo docker compose -p igm-mock-staging up -d --build
+          EOF
