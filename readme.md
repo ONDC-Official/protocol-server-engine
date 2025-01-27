@@ -54,7 +54,7 @@ git submodule update
 git submodule update --remote --merge
 ```
 
-# Conifuration
+# Configuration
 
 The protcol server engine depends on configs to run. Different configs can be used to run buyer mock enigne for diffenent use cases.
 
