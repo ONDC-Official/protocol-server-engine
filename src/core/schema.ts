@@ -16,9 +16,7 @@ export const validateSchema = async (
   payload: Record<string, any>,
   schema: any
 ) => {
-  logger.info(
-    `Inside schema validation service for ${payload?.context?.action} api protocol server`
-  );
+
   try {
     const validate = ajv.compile(schema);
     const valid = validate(payload);

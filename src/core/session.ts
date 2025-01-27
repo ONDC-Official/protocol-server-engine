@@ -16,39 +16,11 @@ export const getSession = async (transaction_id: string) => {
   return await cache.get(transaction_id);
 };
 
-function loadConfig() {
-  if (!SERVER_TYPE) {
-    throw new Error("SERVER_TYPE not defined in env variables");
-  }
-  return new Promise(async (resolve, reject) => {
-    try {
-      if (localConfig) {
-        let config = yaml.parse(
-          fs.readFileSync(path.join(__dirname, "../configs/index.yaml"), "utf8")
-        );
-
-        const schema = await $RefParser.dereference(config);
-
-        // this.config = schema;
-        config = schema;
-
-        resolve(schema[SERVER_TYPE]);
-      } else {
-        const build_spec = configLoader.getConfig();
-
-        resolve(build_spec[SERVER_TYPE]);
-      }
-    } catch (e: any) {
-      throw new Error(e);
-    }
-  });
-}
 
 const getConfigBasedOnFlow = async (flowId: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // this.config = await loadConfig();
-      const config = (await loadConfig()) as any;
+      const config = (configLoader.getConfig()[process.env.SERVER_TYPE as string]) as any;
       let filteredProtocol = null;
       let filteredCalls = null;
       let filteredDomain = null;
@@ -58,7 +30,6 @@ const getConfigBasedOnFlow = async (flowId: string) => {
       let filteredSchema = null;
       let filteredApi = null;
 
-      // this.config.flows.forEach((flow) => {
       config.flows.forEach((flow: any) => {
         if (flow.id === flowId) {
           const {
@@ -139,13 +110,10 @@ export const findSession = async (body: any) => {
   try {
     let session = "session";
     const allSessions = await cache.get();
-    console.log("allSessions", allSessions);
 
     for (const ses of allSessions) {
       const sessionData = await getSession(ses);
-      console.log("sessionDat", sessionData.transactionIds);
       if (sessionData.transactionIds.includes(body.context.transaction_id)) {
-        console.log("<got session>");
         session = sessionData;
         break;
       }

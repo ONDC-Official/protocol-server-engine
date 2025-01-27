@@ -9,7 +9,8 @@
     "dev:buyer": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.buyer.mob.env dotenv_config_debug=true",
     "dev:seller": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.seller.mob.env dotenv_config_debug=true",
     "dev:buyer:FIS": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.buyer.FIS.env dotenv_config_debug=true",
-    "dev:seller:FIS": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.seller.FIS.env dotenv_config_debug=true"
+    "dev:seller:FIS": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.seller.FIS.env dotenv_config_debug=true",
+    "build":"tsc"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +29,7 @@
     "uuid": "^9.0.1",
     "winston": "^3.12.0",
     "winston-daily-rotate-file": "^5.0.0",
-    "winston-loki": "^6.1.2",
+    "winston-loki": "^6.1.3",
     "yaml": "^2.4.1"
   },
   "devDependencies": {

@@ -35,11 +35,6 @@ export const getsession = async (req: Request, res: Response) => {
 
 export const becknToBusiness = (req: Request, res: Response) => {
   const logID = uuidv4();
-  logger.info("/ondc/:method api controller", { uuid: logID });
-  logger.info(`/ondc/:method api param - method - ${req.params.method}`, {
-    uuid: logID,
-  });
-  logger.debug(`/ondc:method api payload - ${JSON.stringify(req.body)}`);
   const body = req.body;
   const transaction_id = body?.context?.transaction_id;
   const config = body.context.action;
@@ -67,23 +62,25 @@ const validateIncommingRequest = async (
     if (SERVER_TYPE === "BPP") {
       session = await getSession(transaction_id);
 
-      const configObject = configLoader.getConfig();
-
-      if (!session?.configName) {
-        var configName = dynamicFlow(
-          body,
-          configObject[SERVER_TYPE]["flow_selector"][config]
-        );
-      }
+      const configObject = configLoader.getConfig();    
 
       if (!session) {
+
+        const flow_selector_config = configObject[SERVER_TYPE]["flow_selector"][config]
+        if(flow_selector_config==undefined) {logger.error(`action : ${config} not found in the flow_selector unable to assign config-name`); logger.info(`available actions in flow-selector are -  ${Object.keys(configObject[SERVER_TYPE]["flow_selector"])}`); logger.error(`terminating the call for transaction_id - ${transaction_id}`);return;}
+        var configName = dynamicFlow(
+          body,
+          flow_selector_config
+        )
         const sessionObject = {
           version: body.context.version,
           country: body?.context?.location?.country?.code,
           cityCode: body?.context?.location?.city?.code,
           configName: configName || process.env.flow,
-          transaction_id: transaction_id,
-        };
+          transaction_id: transaction_id
+      }
+        logger.info(`New request recieved creating new session ${JSON.stringify(sessionObject)}`)
+
         await generateSession(sessionObject);
         session = await getSession(transaction_id);
       }
@@ -91,12 +88,11 @@ const validateIncommingRequest = async (
       session = await findSession(body);
 
       if (!session) {
-        console.log("No session exists");
+        logger.info("No session exists");
         return res.status(200).send(errorNack);
       }
     }
 
-    logger.info("Recieved request: " + JSON.stringify(body));
 
     const schemaConfig = configLoader.getSchema();
 
@@ -174,7 +170,6 @@ const handleRequest = async (
         config = action;
       }
 
-      console.log("config >>>>>", config);
 
       const mapping = configLoader.getMapping(session.configName);
       const protocol = mapping ? mapping[config] : null;
@@ -221,7 +216,6 @@ const handleRequest = async (
         delete updatedSession.schema;
       }
 
-      logger.info("mode>>>>>>>>> " + mode);
       if (mode === ASYNC_MODE) {
         await axios.post(`${process.env.BACKEND_SERVER_URL}/${urlEndpint}`, {
           businessPayload,
@@ -235,16 +229,18 @@ const handleRequest = async (
       let config = null;
       let isUnsolicited = true;
 
-      if (isUnsolicited || true) {
-        config = action;
+    if (isUnsolicited || true) {
+      config = action;
       }
 
       console.log("config >>>>>", config);
 
-      const mapping = configLoader.getMapping(session.configName);
+      const mapping : any = configLoader.getMapping(session.configName);
       const protocol = mapping ? mapping[config] : null;
-      if (protocol == undefined) {
-        throw new Error("Protocol  is undefined");
+      if(protocol == undefined){
+        logger.error(`Protocol is undefined / action type not found in protocol-mapping \n recieved action = ${config}`)
+        logger.error(`Available protocol-mapping actions are \n ${Object.keys(mapping)}`)
+        return
       }
       const { result: businessPayload, session: updatedSession } =
         extractBusinessData(action, response, session, protocol);
@@ -289,8 +285,8 @@ const handleRequest = async (
         delete updatedSession.schema;
       }
 
-      logger.info("mode>>>>>>>>> " + mode);
       if (mode === ASYNC_MODE) {
+        logger.info (`triggering seller mock engine call at ${process.env.BACKEND_SERVER_URL}/${urlEndpint} `)
         await axios.post(`${process.env.BACKEND_SERVER_URL}/${urlEndpint}`, {
           businessPayload, // minified response of response || extract method in buyer mock works on this payload extracts from business payload
           updatedSession, // request ayi session data kuch value update kii to buyer mock m sync krne  k liye
@@ -302,7 +298,6 @@ const handleRequest = async (
     }
     // throw new Error("an error occurred")
   } catch (e) {
-    console.log(e);
     logger.error(e);
   }
 };
@@ -394,11 +389,11 @@ export const businessToBecknMethod = async (body: any, logID: any) => {
     } else {
       url =
         SERVER_TYPE === "BPP"
-          ? session.dualmode ? session.url 
+          ? session.dualmode && session.url ? session.url 
             : becknPayload.context.bap_uri
           : becknPayload.context.bpp_uri;
     }
-
+    if(session.dualmode && session.url){logger.debug("dual mode failed triggering back to bap_uri")}
     if (!url && type != "search") {
       logger.error("/createPayload api - callback url not provided", {
         uuid: logID,

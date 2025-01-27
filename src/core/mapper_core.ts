@@ -438,8 +438,6 @@ export const extractBusinessData = (
   if (protocol.sessionData) {
     const parsedSchema = createBusinessPayload(protocol.sessionData, payload,session);
 
-    console.log("parsedSchaems", parsedSchema);
-
     session = { ...session, ...parsedSchema };
   }
 
