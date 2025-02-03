@@ -143,6 +143,10 @@ const buildContext = (session: any, action: any) => {
       value: "session.version",
     },
     {
+      beckn_key: "core_version",
+      value: "session.core_version",
+    },
+    {
       beckn_key: "ttl",
       value: "session.ttl",
     },
