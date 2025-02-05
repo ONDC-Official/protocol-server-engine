@@ -22,6 +22,7 @@ import { configLoader } from "../core/loadConfig";
 import validateAttributes from "../core/attributeValidation";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
+import LogProcessor from "../core/logValidation"
 
 const ASYNC_MODE = "ASYNC";
 const SYNC_MODE = "SYNC";
@@ -295,6 +296,8 @@ const handleRequest = async (
           response,
         });
       }
+      // store in log validation utility
+      LogProcessor.storeLogs(session.logValidationType,response)
     }
     // throw new Error("an error occurred")
   } catch (e) {
@@ -420,7 +423,7 @@ export const businessToBecknMethod = async (body: any, logID: any) => {
       uuid: logID,
     });
     const response = await axios.post(`${url}${type}`, becknPayload, header);
-
+    LogProcessor.storeLogs(session.logValidationType,becknPayload)
     let mode = null;
     if (SERVER_TYPE === "BAP") {
       const updatedCalls = updatedSession.calls.map((call: any) => {

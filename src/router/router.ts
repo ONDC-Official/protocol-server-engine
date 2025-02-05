@@ -8,6 +8,7 @@ import {
   updateSession,
   getsession,
 } from "../controller/index";
+import {validateLogs } from "../controller/logvalidation"
 const logger = require("../utils/logger").init();
 
 // buss > beckn
@@ -25,3 +26,5 @@ router.get("/health", (req: Request, res: Response) => {
 });
 
 router.get("/session", getsession);
+
+router.get("/validatelogs/:transaction_id",validateLogs)
