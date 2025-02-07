@@ -84,6 +84,15 @@ export async function generateSession(session_body: any) {
       filteredApi,
     } = (await getConfigBasedOnFlow(configName)) as any;
 
+    //add subcriber id from env if found in the env else load from session for igm
+    const subscriber_id = process.env.subscriber_id
+    const subscriber_url = process.env.subscriber_url
+    const subscriber : any = {}
+    if(subscriber_id&&subscriber_url){
+      subscriber.subscriber_id=subscriber_id
+      subscriber.subscriber_url=subscriber_url
+    }
+
     const session = {
       ...session_body,
       bap_id: process.env.SUBSCRIBER_ID,
@@ -98,7 +107,8 @@ export async function generateSession(session_body: any) {
       calls: filteredCalls,
       additioalFlows: filteredAdditionalFlows,
       // schema: filteredSchema,
-      api: filteredApi,
+      api: filteredApi, 
+      ...subscriber // load subscriber id and url from env if exists
     };
 
     await insertSession(session);
