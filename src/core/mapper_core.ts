@@ -225,7 +225,7 @@ const createPayload = (
 
   config.map((item: any) => {
     try {
-      if (eval(item.value) && (item.check ? eval(item.check) : true))
+      if (eval(item.value)==false || eval(item.value)  && (item.check ? eval(item.check) : true))
         createNestedField(
           payload,
           item.beckn_key,
@@ -429,7 +429,9 @@ export const createBecknObject = (
     session = { ...session, ...updatedSession };
   }
   const payload = createPayload(config.mapping, type, data, session, ondc);
-
+  if(session?.on_status){ // store last beckn payload for on_status
+      session.lastPayload = payload
+  }
   return { payload, session };
 };
 
