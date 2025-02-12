@@ -33,6 +33,7 @@ export const getsession = async (req: Request, res: Response) => {
   logger.info("/session api executed", { uuid: logID });
 };
 
+// beckn-business-1
 export const becknToBusiness = (req: Request, res: Response) => {
   const logID = uuidv4();
   const body = req.body;
@@ -42,6 +43,7 @@ export const becknToBusiness = (req: Request, res: Response) => {
   validateIncommingRequest(body, transaction_id, config, res, logID);
 };
 
+//beckn-business-2
 const validateIncommingRequest = async (
   body: Record<string, any>,
   transaction_id: string,
@@ -67,7 +69,7 @@ const validateIncommingRequest = async (
       if (!session) {
 
         const flow_selector_config = configObject[SERVER_TYPE]["flow_selector"][config]
-        if(flow_selector_config==undefined) {logger.error(`action : ${config} not found in the flow_selector unable to assign config-name`); logger.info(`available actions in flow-selector are -  ${Object.keys(configObject[SERVER_TYPE]["flow_selector"])}`); logger.error(`terminating the call for transaction_id - ${transaction_id}`);return;}
+        if(flow_selector_config==undefined) {logger.error(`action : ${config} not found in the flow_selector unable to assign config-name`); logger.info(`available actions in flow-selector are -  ${Object.keys(configObject[SERVER_TYPE]["flow_selector"])}`); logger.error(`terminating the call for transaction_id - ${transaction_id}`);return res.status(400).send({message:"session id not found please create session first , make sure you are using the same transaction_id that you created session with"});}
         var configName = dynamicFlow(
           body,
           flow_selector_config
@@ -138,6 +140,7 @@ const validateIncommingRequest = async (
   }
 };
 
+//beckn-business-3
 const handleRequest = async (
   response: any,
   session: any,
@@ -285,13 +288,23 @@ const handleRequest = async (
         delete updatedSession.schema;
       }
 
+      if(protocol?.status){
+        const on_action = `on_${config}`
+        const body : any = {
+          type: on_action,
+          config: on_action,
+          transactionId:response?.context?.transaction_id
+        }
+        const { status, message, code } = await businessToBecknMethod(body,uuidv4()) as any
+        return
+      }      
       if (mode === ASYNC_MODE) {
         logger.info (`triggering seller mock engine call at ${process.env.BACKEND_SERVER_URL}/${urlEndpint} `)
         await axios.post(`${process.env.BACKEND_SERVER_URL}/${urlEndpint}`, {
           businessPayload, // minified response of response || extract method in buyer mock works on this payload extracts from business payload
-          updatedSession, // request ayi session data kuch value update kii to buyer mock m sync krne  k liye
-          messageId, // message id <omit>
-          sessionId, // protocol server ki transaction id useless <omit>
+          updatedSession, // updated session after sessionData config has been processed
+          messageId, // message id not being used in bpp
+          sessionId, // protocol server transaction id not being used in bpp mode
           response,
         });
       }
@@ -302,6 +315,8 @@ const handleRequest = async (
   }
 };
 
+
+// business-beckn-1
 export const businessToBecknWrapper = async (req: Request, res: Response) => {
   const logID = uuidv4();
   logger.info("/createPayload api controller", { uuid: logID });
@@ -325,6 +340,7 @@ export const businessToBecknWrapper = async (req: Request, res: Response) => {
   }
 };
 
+// business-beckn-2
 export const businessToBecknMethod = async (body: any, logID: any) => {
   try {
     //except target i can fetch rest from my payload
