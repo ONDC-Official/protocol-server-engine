@@ -435,6 +435,25 @@ export const createBecknObject = (
   return { payload, session };
 };
 
+export function removeEmptyKeys(obj: any): any {
+  if (Array.isArray(obj)) {
+      // Recursively clean each element in the array
+      return obj.map(removeEmptyKeys).filter(value => 
+          value !== undefined && value !== null && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)
+      );
+  } else if (typeof obj === "object" && obj !== null) {
+      // Recursively clean object properties
+      return Object.fromEntries(
+          Object.entries(obj)
+              .map(([key, value]) => [key, removeEmptyKeys(value)]) // Recursively process nested properties
+              .filter(([_, value]) => 
+                  value !== undefined && value !== null && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)
+              )
+      );
+  }
+  return obj; // Return primitive values as is
+}
+
 export const extractBusinessData = (
   type: string,
   payload: Record<string, any>,
