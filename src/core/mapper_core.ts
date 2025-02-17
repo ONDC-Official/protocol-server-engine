@@ -428,7 +428,7 @@ export const createBecknObject = (
 
     session = { ...session, ...updatedSession };
   }
-  const payload = createPayload(config.mapping, type, data, session, ondc);
+  const payload = removeEmptyKeys(createPayload(config.mapping, type, data, session, ondc));
   if(session?.on_status){ // store last beckn payload for on_status
     session.lastPayload = payload
 }
