@@ -437,22 +437,25 @@ export const createBecknObject = (
 
 export function removeEmptyKeys(obj: any): any {
   if (Array.isArray(obj)) {
-      // Recursively clean each element in the array
       return obj.map(removeEmptyKeys).filter(value => 
-          value !== undefined && value !== null && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)
+          value !== undefined && value !== null && value !== "" && 
+          !(typeof value === "object" && !(value instanceof Date) && Object.keys(value).length === 0)
       );
   } else if (typeof obj === "object" && obj !== null) {
-      // Recursively clean object properties
+      if (obj instanceof Date) return obj; // Preserve Date objects
+
       return Object.fromEntries(
           Object.entries(obj)
-              .map(([key, value]) => [key, removeEmptyKeys(value)]) // Recursively process nested properties
+              .map(([key, value]) => [key, removeEmptyKeys(value)])
               .filter(([_, value]) => 
-                  value !== undefined && value !== null && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)
+                  value !== undefined && value !== null && value !== "" && 
+                  !(typeof value === "object" && !(value instanceof Date) && Object.keys(value).length === 0)
               )
       );
   }
-  return obj; // Return primitive values as is
+  return obj;
 }
+
 
 export const extractBusinessData = (
   type: string,
