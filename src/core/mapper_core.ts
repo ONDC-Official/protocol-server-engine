@@ -225,7 +225,8 @@ const createPayload = (
 
   config.map((item: any) => {
     try {
-      if (eval(item.value)==false || eval(item.value)  && (item.check ? eval(item.check) : true))
+      // eval(item.value)==false ||
+      if ( eval(item.value)  && (item.check ? eval(item.check) : true))
         createNestedField(
           payload,
           item.beckn_key,
