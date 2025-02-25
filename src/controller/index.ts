@@ -513,7 +513,17 @@ export const businessToBecknMethod = async (body: any, logID: any) => {
     logger.error(`/createPayload - error - ${e?.message || e}`, {
       uuid: logID,
     });
-    return { status: "Error", message: errorNack, code: 500 };
+    const errorMessage = {
+      message: {
+        ack: {
+          status: "NACK",
+        },
+      },
+      error: {
+        message: e?.message,
+      },
+    }
+    return { status: "Error", message: errorMessage, code: 500 };
   }
 };
 
