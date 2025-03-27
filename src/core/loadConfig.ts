@@ -16,13 +16,19 @@ class ConfigLoader {
   async init() {
     try {
       if (localConfig) {
-        const localConfigFileName = process.env.CONFIG_FILE_NAME;
-
-        if (!localConfigFileName) {
-          throw new Error("Env variable 'CONFIG_FILE_NAME' not found");
-        }
+        
+        const config = 
+        
+        yaml.parse(
+          // fs.readFileSync(path.join(__dirname, `../../configs/${process.env.localConfigName}.yaml`), "utf8")
+          fs.readFileSync(path.join(__dirname, `../../protocol-server-config/configs/igm.yaml`), "utf8")
+        );
+// @ts-ignore
+        
         const schema = await $RefParser.dereference(
-          `protocol-server-config/build/${localConfigFileName}`
+                  //@ts-ignore
+                  config
+          // `protocol-server-config/build/${localConfigFileName}`
         );
 
         this.config = schema;

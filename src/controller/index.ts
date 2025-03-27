@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createBecknObject, extractBusinessData } from "../core/mapper_core";
+
 import {
   insertSession,
   getSession,
@@ -16,12 +17,13 @@ import { validateSchema } from "../core/schema";
 const SERVER_TYPE = process.env.SERVER_TYPE;
 const PROTOCOL_SERVER = process.env.PROTOCOL_SERVER;
 const logger = require("../utils/logger").init();
-import { signNack, errorNack, ack } from "../utils/responses";
+import { signNack, errorNack, ack, invalidNack } from "../utils/responses";
 import { dynamicReponse, dynamicFlow } from "../core/operations/main";
 import { configLoader } from "../core/loadConfig";
 import validateAttributes from "../core/attributeValidation";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
+import { performL1Validations } from "../L1-validations";
 
 const ASYNC_MODE = "ASYNC";
 const SYNC_MODE = "SYNC";
@@ -39,7 +41,14 @@ export const becknToBusiness = (req: Request, res: Response) => {
   const body = req.body;
   const transaction_id = body?.context?.transaction_id;
   const config = body.context.action;
-
+  const validations = performL1Validations(config,body);
+  const invalid = validations.filter(v => !v.valid && v.code!==200);
+  if(invalid.length > 0){
+    const nack = invalidNack;
+    nack.error.message = invalid[0].description as string; 
+    res.status(200).send(invalidNack);
+    return;
+  }
   validateIncommingRequest(body, transaction_id, config, res, logID);
 };
 
@@ -129,6 +138,8 @@ const validateIncommingRequest = async (
     } else {
       logger.info(`Attribute config missing for ${session.configName}`);
     }
+
+  // Add L1 Validations
 
     logger.info(`/ondc/:method api - response sent back`);
     res.send(ack);
@@ -434,6 +445,7 @@ export const businessToBecknMethod = async (body: any, logID: any) => {
 
     logger.info(`/createPayload api - sending request to gateway`, {
       uuid: logID,
+      url : `${url}${type}`
     });
     const response = await axios.post(`${url}${type}`, becknPayload, header);
 
@@ -565,3 +577,5 @@ export const updateSession = async (req: Request, res: Response) => {
 //   businessToBecknWrapper,
 //   updateSession,
 // };
+
+

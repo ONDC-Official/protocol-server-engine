@@ -6,7 +6,7 @@ import {
   fetchTransactionById,
   upsertTransaction,
 } from "./dbServices";
-import { parseBoolean } from "./../utils/utils";
+import { parseBoolean } from "../utils/utils";
 
 const defaultCacheOptions = { stdTTL: 100, checkperiod: 120 };
 const USE_DB = parseBoolean(process.env.USE_DB);
