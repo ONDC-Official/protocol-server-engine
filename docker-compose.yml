@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  protocol-server-engine:
+    container_name: ${SERVICE_NAME}
+    restart: always
+    build: .
+    ports:
+      - "${PORT}:${PORT}"
