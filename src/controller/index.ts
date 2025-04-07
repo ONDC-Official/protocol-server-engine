@@ -23,7 +23,7 @@ import { configLoader } from "../core/loadConfig";
 import validateAttributes from "../core/attributeValidation";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { performL1Validations } from "../L1-validations";
+import { performL1validations } from "../L1-validations";
 
 const ASYNC_MODE = "ASYNC";
 const SYNC_MODE = "SYNC";
@@ -41,7 +41,7 @@ export const becknToBusiness = (req: Request, res: Response) => {
   const body = req.body;
   const transaction_id = body?.context?.transaction_id;
   const config = body.context.action;
-  const validations = performL1Validations(config,body);
+  const validations = performL1validations(config,body);
   const invalid = validations.filter(v => !v.valid && v.code!==200);
   if(invalid.length > 0){
     const nack = invalidNack;
