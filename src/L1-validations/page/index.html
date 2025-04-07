@@ -13,19 +13,85 @@
         <ul>
 <li><p><strong>issue</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><p><strong>condition REQUIRED_MESSAGE_ID</strong>: $.message.issue.id must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_STATUS</strong>: all of the following sub conditions must be met:</p>
+<li><p><strong>ISSUE_CONTEXT</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition REQUIRED_MESSAGE_STATUS.1</strong>: $.message.issue.status must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_STATUS.2</strong>: every element of $.message.issue.status must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;]</li>
+<li><p><strong>CONTEXT_Attributes_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition CONTEXT_REQUIRED_COUNTRY</strong>: $.context.location.country.code must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_CITY</strong>: $.context.location.city.code must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REG_CITY</strong>: all elements of $.context.location.city.code must follow every regex in [&quot;(*)|(^std:[0-9]{2,4}$)&quot;]</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_DOMAIN</strong>: $.context.domain must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_TIMESTAMP</strong>: $.context.timestamp must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BAP_ID</strong>: $.context.bap_id must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_TRANSACTION_ID</strong>: $.context.transaction_id must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_MESSAGE_ID</strong>: $.context.message_id must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_VERSION</strong>: $.context.version must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_ENUM_VERSION</strong>: $.context.version must be equal to [&quot;2.0.0&quot;]</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_ACTION</strong>: $.context.action must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BAP_URI</strong>: $.context.bap_uri must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REG_BAP_URI</strong>: all elements of $.context.bap_uri must follow every regex in [&quot;(^https://)&quot;]</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BPP_ID</strong>: $.context.bpp_id must be present in the payload</p>
+<blockquote>
+<p>Note: <strong>Condition CONTEXT_REQUIRED_BPP_ID</strong> can be skipped if the following conditions are met:</p>
+<ul>
+<li><strong>condition B</strong>: [&quot;issue&quot;] must <strong>not</strong> be equal to [&quot;issue&quot;]</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BPP_URI</strong>: $.context.bpp_uri must be present in the payload</p>
+<blockquote>
+<p>Note: <strong>Condition CONTEXT_REQUIRED_BPP_URI</strong> can be skipped if the following conditions are met:</p>
+<ul>
+<li><strong>condition B</strong>: [&quot;issue&quot;] must <strong>not</strong> be equal to [&quot;issue&quot;]</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>condition CONTEXT_REG_BPP_URI</strong>: all elements of $.context.bpp_uri must follow every regex in [&quot;(^https://)&quot;]</p>
+<blockquote>
+<p>Note: <strong>Condition CONTEXT_REG_BPP_URI</strong> can be skipped if the following conditions are met:</p>
+<ul>
+<li><strong>condition B</strong>: [&quot;issue&quot;] must <strong>not</strong> be equal to [&quot;issue&quot;]</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_TTL</strong>: $.context.ttl must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REG_TTL</strong>: all elements of $.context.ttl must follow every regex in [&quot;^P(?!$)((\d+Y)|(\d+.\d+Y$))?((\d+M)|(\d+.\d+M$))?((\d+W)|(\d+.\d+W$))?((\d+D)|(\d+.\d+D$))?(T(?=\d)((\d+H)|(\d+.\d+H$))?((\d+M)|(\d+.\d+M$))?(\d+(.\d+)?S)?)??$&quot;]</p>
+</li>
 </ul>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_LEVEL</strong>: all of the following sub conditions must be met:</p>
+<li><p><strong>Context_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition REQUIRED_MESSAGE_LEVEL.1</strong>: $.message.issue.level must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_LEVEL.2</strong>: every element of $.message.issue.level must be in [&quot;ISSUE&quot;, &quot;GREVIENCE&quot;, &quot;DISPUTE&quot;]</li>
+<li><p><strong>condition VALID_ENUM_context_location_country_code</strong>: every element of $.context.location.country.code must be in [&quot;IND&quot;]</p>
+</li>
+<li><p><strong>condition VALID_ENUM_context_action</strong>: every element of $.context.action must be in [&quot;issue&quot;]</p>
+</li>
 </ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ISSUE_ISSUE</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>ISSUE_REQUIRED</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition REQUIRED_ISSUE_ID</strong>: $.message.issue.id must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_ISSUE_STATUS</strong>: $.message.issue.status must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_LEVEL</strong>: $.message.issue.level must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_CREATED_AT</strong>: $.message.issue.created_at must be present in the payload</p>
 </li>
@@ -35,34 +101,52 @@
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_DURATION_7</strong>: $.message.issue.expected_resolution_time.duration must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_REF_ID</strong>: $.message.issue.refs[*].ref_id must be present in the payload</p>
+<li><p><strong>condition REQUIRED_MESSAGE_SOURCE_ID</strong>: $.message.issue.source_id must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_REF_TYPE</strong>: all of the following sub conditions must be met:</p>
-<ul>
-<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.1</strong>: $.message.issue.refs[*].ref_type must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.2</strong>: every element of $.message.issue.refs[*].ref_type must be in [&quot;ORDER&quot;, &quot;ITEM&quot;, &quot;FULFILLMENT&quot;, &quot;TRANSACTION_ID&quot;, &quot;MESSAGE_ID&quot;, &quot;PROVIDER&quot;, &quot;COMPLAINT&quot;, &quot;ACTION&quot;, &quot;PAYMENT&quot;, &quot;CUSTOMER&quot;, &quot;AGENT&quot;]</li>
+<li><p><strong>condition REQUIRED_MESSAGE_COMPLAINANT_ID</strong>: $.message.issue.complainant_id must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_LAST_ACTION_ID</strong>: $.message.issue.last_action_id must be present in the payload</p>
+</li>
 </ul>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_ID_10</strong>: $.message.issue.actors[*].id must be present in the payload</p>
+<li><p><strong>ISSUE_ENUM</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition Required_message_enum</strong>: every element of $.message.issue.status must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;]</p>
 </li>
+<li><p><strong>condition REQUIRED_MESSAGE_LEVEL</strong>: every element of $.message.issue.level must be in [&quot;ISSUE&quot;, &quot;GREVIENCE&quot;, &quot;DISPUTE&quot;]</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ISSUE_ACTORS</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>Actors_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_TYPE</strong>: all of the following sub conditions must be met:</p>
 <ul>
 <li><strong>condition REQUIRED_MESSAGE_TYPE.1</strong>: $.message.issue.actors[*].type must be present in the payload</li>
 <li><strong>condition REQUIRED_MESSAGE_TYPE.2</strong>: every element of $.message.issue.actors[*].type must be in [&quot;INERFACING_NP&quot;, &quot;COUNTERPARTY_NP&quot;, &quot;CASCADED_NP&quot;, &quot;PROVIDER&quot;, &quot;AGENT&quot;, &quot;CUSTOMER&quot;, &quot;INTERFACING_NP_GRO&quot;, &quot;COUNTERPARTY_NP_GRO&quot;, &quot;CASCADED_NP_GRO&quot;]</li>
 </ul>
 </li>
+</ul>
+</li>
+<li><p><strong>Actors_Attribute_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_NAME</strong>: $.message.issue.actors[*].info.person.name must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_NAME_13</strong>: $.message.issue.actors[*].info.person.name must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_PHONE</strong>: $.message.issue.actors[*].info.contact.phone must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_EMAIL</strong>: $.message.issue.actors[*].info.contact.email must be present in the payload</p>
+<li><p><strong>condition REQUIRED_MESSAGE_ID_10</strong>: $.message.issue.actors[*].id must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_SOURCE_ID</strong>: $.message.issue.source_id must be present in the payload</p>
+</ul>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_COMPLAINANT_ID</strong>: $.message.issue.complainant_id must be present in the payload</p>
+</ul>
 </li>
+<li><p><strong>ISSUE_DESCRIPTION</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_CODE</strong>: $.message.issue.descriptor.code must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_SHORT_DESC</strong>: $.message.issue.descriptor.short_desc must be present in the payload</p>
@@ -75,8 +159,12 @@
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_NAME_23</strong>: $.message.issue.descriptor.name must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_LAST_ACTION_ID</strong>: $.message.issue.last_action_id must be present in the payload</p>
+</ul>
 </li>
+<li><p><strong>ISSUE_ACTIONS</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>Actions_Attributes_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_ID_25</strong>: $.message.issue.actions[*].id must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_CODE_26</strong>: $.message.issue.actions[*].descriptor.code must be present in the payload</p>
@@ -87,77 +175,119 @@
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_ACTION_BY</strong>: $.message.issue.actions[*].action_by must be present in the payload</p>
 </li>
+</ul>
+</li>
+<li><p><strong>Actions_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_NAME_30</strong>: all of the following sub conditions must be met:</p>
 <ul>
 <li><strong>condition REQUIRED_MESSAGE_NAME_30.1</strong>: $.message.issue.actions[*].descriptor.name must be present in the payload</li>
 <li><strong>condition REQUIRED_MESSAGE_NAME_30.2</strong>: every element of $.message.issue.actions[*].descriptor.name must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;, &quot;INFO_REQUESTED&quot;, &quot;INFO_PROVIDED&quot;, &quot;INFO_NOT_AVAILABLE&quot;, &quot;RESOLUTION_PROPOSED&quot;, &quot;RESOLUTION_CASCADED&quot;, &quot;RESOLUTION_ACCEPTED&quot;, &quot;RESOLUTION_REJECTED&quot;]</li>
 </ul>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_STATUS</strong>: every element of $.message.issue.status must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_STATUS</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.status must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_LEVEL</strong>: every element of $.message.issue.level must be in [&quot;ISSUE&quot;, &quot;GREVIENCE&quot;, &quot;DISPUTE&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_LEVEL</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.level must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_REF_TYPE</strong>: every element of $.message.issue.refs[*].ref_type must be in [&quot;ORDER&quot;, &quot;ITEM&quot;, &quot;FULFILLMENT&quot;, &quot;TRANSACTION_ID&quot;, &quot;MESSAGE_ID&quot;, &quot;PROVIDER&quot;, &quot;COMPLAINT&quot;, &quot;ACTION&quot;, &quot;PAYMENT&quot;, &quot;CUSTOMER&quot;, &quot;AGENT&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_REF_TYPE</strong> can be skipped if the following conditions are met:</p>
+<li><p><strong>ISSUE_REFS</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition B</strong>: $.message.issue.refs[*].ref_type must <strong>not</strong> be present in the payload</li>
-</ul>
-</blockquote>
+<li><p><strong>condition REQUIRED_MESSAGE_REF_ID</strong>: $.message.issue.refs[*].ref_id must be present in the payload</p>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_TYPE</strong>: every element of $.message.issue.actors[*].type must be in [&quot;INERFACING_NP&quot;, &quot;COUNTERPARTY_NP&quot;, &quot;CASCADED_NP&quot;, &quot;PROVIDER&quot;, &quot;AGENT&quot;, &quot;CUSTOMER&quot;, &quot;INTERFACING_NP_GRO&quot;, &quot;COUNTERPARTY_NP_GRO&quot;, &quot;CASCADED_NP_GRO&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_TYPE</strong> can be skipped if the following conditions are met:</p>
+<li><p><strong>Refs_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition B</strong>: $.message.issue.actors[*].type must <strong>not</strong> be present in the payload</li>
+<li><p><strong>condition REQUIRED_MESSAGE_REF_TYPE</strong>: all of the following sub conditions must be met:</p>
+<ul>
+<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.1</strong>: $.message.issue.refs[*].ref_type must be present in the payload</li>
+<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.2</strong>: every element of $.message.issue.refs[*].ref_type must be in [&quot;ORDER&quot;, &quot;ITEM&quot;, &quot;FULFILLMENT&quot;, &quot;TRANSACTION_ID&quot;, &quot;MESSAGE_ID&quot;, &quot;PROVIDER&quot;, &quot;COMPLAINT&quot;, &quot;ACTION&quot;, &quot;PAYMENT&quot;, &quot;CUSTOMER&quot;, &quot;AGENT&quot;]</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_NAME</strong>: every element of $.message.issue.actions[*].descriptor.name must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;, &quot;INFO_REQUESTED&quot;, &quot;INFO_PROVIDED&quot;, &quot;INFO_NOT_AVAILABLE&quot;, &quot;RESOLUTION_PROPOSED&quot;, &quot;RESOLUTION_CASCADED&quot;, &quot;RESOLUTION_ACCEPTED&quot;, &quot;RESOLUTION_REJECTED&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_NAME</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.actions[*].descriptor.name must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_NAME_6</strong>: every element of $.message.issue.resolutions[*].descriptor.name must be in [&quot;REFUND&quot;, &quot;RETURN&quot;, &quot;REPLACEMENT&quot;, &quot;NO-ACTION&quot;, &quot;CANCEL&quot;, &quot;NOW-VISIBLE&quot;, &quot;PARENT&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_NAME_6</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.resolutions[*].descriptor.name must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
 </ul>
 </li>
 <li><p><strong>on_issue</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><p><strong>condition REQUIRED_MESSAGE_ID</strong>: $.message.issue.id must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_STATUS</strong>: all of the following sub conditions must be met:</p>
+<li><p><strong>ON_ISSUE_CONTEXT</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition REQUIRED_MESSAGE_STATUS.1</strong>: $.message.issue.status must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_STATUS.2</strong>: every element of $.message.issue.status must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;]</li>
+<li><p><strong>CONTEXT_Attributes_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition CONTEXT_REQUIRED_COUNTRY</strong>: $.context.location.country.code must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_CITY</strong>: $.context.location.city.code must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REG_CITY</strong>: all elements of $.context.location.city.code must follow every regex in [&quot;(*)|(^std:[0-9]{2,4}$)&quot;]</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_DOMAIN</strong>: $.context.domain must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_TIMESTAMP</strong>: $.context.timestamp must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BAP_ID</strong>: $.context.bap_id must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_TRANSACTION_ID</strong>: $.context.transaction_id must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_MESSAGE_ID</strong>: $.context.message_id must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_VERSION</strong>: $.context.version must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_ENUM_VERSION</strong>: $.context.version must be equal to [&quot;2.0.0&quot;]</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_ACTION</strong>: $.context.action must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BAP_URI</strong>: $.context.bap_uri must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REG_BAP_URI</strong>: all elements of $.context.bap_uri must follow every regex in [&quot;(^https://)&quot;]</p>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BPP_ID</strong>: $.context.bpp_id must be present in the payload</p>
+<blockquote>
+<p>Note: <strong>Condition CONTEXT_REQUIRED_BPP_ID</strong> can be skipped if the following conditions are met:</p>
+<ul>
+<li><strong>condition B</strong>: [&quot;on_issue&quot;] must <strong>not</strong> be equal to [&quot;on_issue&quot;]</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_BPP_URI</strong>: $.context.bpp_uri must be present in the payload</p>
+<blockquote>
+<p>Note: <strong>Condition CONTEXT_REQUIRED_BPP_URI</strong> can be skipped if the following conditions are met:</p>
+<ul>
+<li><strong>condition B</strong>: [&quot;on_issue&quot;] must <strong>not</strong> be equal to [&quot;on_issue&quot;]</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>condition CONTEXT_REG_BPP_URI</strong>: all elements of $.context.bpp_uri must follow every regex in [&quot;(^https://)&quot;]</p>
+<blockquote>
+<p>Note: <strong>Condition CONTEXT_REG_BPP_URI</strong> can be skipped if the following conditions are met:</p>
+<ul>
+<li><strong>condition B</strong>: [&quot;on_issue&quot;] must <strong>not</strong> be equal to [&quot;on_issue&quot;]</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>condition CONTEXT_REQUIRED_TTL</strong>: $.context.ttl must be present in the payload</p>
+</li>
+<li><p><strong>condition CONTEXT_REG_TTL</strong>: all elements of $.context.ttl must follow every regex in [&quot;^P(?!$)((\d+Y)|(\d+.\d+Y$))?((\d+M)|(\d+.\d+M$))?((\d+W)|(\d+.\d+W$))?((\d+D)|(\d+.\d+D$))?(T(?=\d)((\d+H)|(\d+.\d+H$))?((\d+M)|(\d+.\d+M$))?(\d+(.\d+)?S)?)??$&quot;]</p>
+</li>
 </ul>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_LEVEL</strong>: all of the following sub conditions must be met:</p>
+<li><p><strong>Context_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition REQUIRED_MESSAGE_LEVEL.1</strong>: $.message.issue.level must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_LEVEL.2</strong>: every element of $.message.issue.level must be in [&quot;ISSUE&quot;, &quot;GREVIENCE&quot;, &quot;DISPUTE&quot;]</li>
+<li><p><strong>condition VALID_ENUM_context_location_country_code</strong>: every element of $.context.location.country.code must be in [&quot;IND&quot;]</p>
+</li>
+<li><p><strong>condition VALID_ENUM_context_action</strong>: every element of $.context.action must be in [&quot;issue&quot;]</p>
+</li>
 </ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ON_ISSUE_ISSUE</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>ISSUE_REQUIRED</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition REQUIRED_ISSUE_ID</strong>: $.message.issue.id must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_ISSUE_STATUS</strong>: $.message.issue.status must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_LEVEL</strong>: $.message.issue.level must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_CREATED_AT</strong>: $.message.issue.created_at must be present in the payload</p>
 </li>
@@ -167,34 +297,54 @@
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_DURATION_7</strong>: $.message.issue.expected_resolution_time.duration must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_REF_ID</strong>: $.message.issue.refs[*].ref_id must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_REF_TYPE</strong>: all of the following sub conditions must be met:</p>
-<ul>
-<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.1</strong>: $.message.issue.refs[*].ref_type must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.2</strong>: every element of $.message.issue.refs[*].ref_type must be in [&quot;ORDER&quot;, &quot;ITEM&quot;, &quot;FULFILLMENT&quot;, &quot;TRANSACTION_ID&quot;, &quot;MESSAGE_ID&quot;, &quot;PROVIDER&quot;, &quot;COMPLAINT&quot;, &quot;ACTION&quot;, &quot;PAYMENT&quot;, &quot;CUSTOMER&quot;, &quot;AGENT&quot;]</li>
-</ul>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_ID_10</strong>: $.message.issue.actors[*].id must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_TYPE</strong>: all of the following sub conditions must be met:</p>
-<ul>
-<li><strong>condition REQUIRED_MESSAGE_TYPE.1</strong>: $.message.issue.actors[*].type must be present in the payload</li>
-<li><strong>condition REQUIRED_MESSAGE_TYPE.2</strong>: every element of $.message.issue.actors[*].type must be in [&quot;INERFACING_NP&quot;, &quot;COUNTERPARTY_NP&quot;, &quot;CASCADED_NP&quot;, &quot;PROVIDER&quot;, &quot;AGENT&quot;, &quot;CUSTOMER&quot;, &quot;INTERFACING_NP_GRO&quot;, &quot;COUNTERPARTY_NP_GRO&quot;, &quot;CASCADED_NP_GRO&quot;]</li>
-</ul>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_NAME</strong>: $.message.issue.actors[*].info.person.name must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_NAME_13</strong>: $.message.issue.actors[*].info.person.name must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_PHONE</strong>: $.message.issue.actors[*].info.contact.phone must be present in the payload</p>
-</li>
-<li><p><strong>condition REQUIRED_MESSAGE_EMAIL</strong>: $.message.issue.actors[*].info.contact.email must be present in the payload</p>
-</li>
 <li><p><strong>condition REQUIRED_MESSAGE_SOURCE_ID</strong>: $.message.issue.source_id must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_COMPLAINANT_ID</strong>: $.message.issue.complainant_id must be present in the payload</p>
 </li>
+<li><p><strong>condition REQUIRED_MESSAGE_LAST_ACTION_ID</strong>: $.message.issue.last_action_id must be present in the payload</p>
+</li>
+</ul>
+</li>
+<li><p><strong>ISSUE_ENUM</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition Actions_Enums_Tests_1</strong>: every element of $.message.issue.status must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;]</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_LEVEL</strong>: every element of $.message.issue.level must be in [&quot;ISSUE&quot;, &quot;GREVIENCE&quot;, &quot;DISPUTE&quot;]</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ISSUE_ACTIONS_1</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>Actions_Attributes_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition REQUIRED_MESSAGE_ID_25</strong>: $.message.issue.actions[*].id must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_CODE_26</strong>: $.message.issue.actions[*].descriptor.code must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_SHORT_DESC_27</strong>: $.message.issue.actions[*].descriptor.short_desc must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_UPDATED_AT_28</strong>: $.message.issue.actions[*].updated_at must be present in the payload</p>
+</li>
+<li><p><strong>condition REQUIRED_MESSAGE_ACTION_BY</strong>: $.message.issue.actions[*].action_by must be present in the payload</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Actions_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>condition REQUIRED_MESSAGE_NAME_30</strong>: all of the following sub conditions must be met:</p>
+<ul>
+<li><strong>condition REQUIRED_MESSAGE_NAME_30.1</strong>: $.message.issue.actions[*].descriptor.name must be present in the payload</li>
+<li><strong>condition REQUIRED_MESSAGE_NAME_30.2</strong>: every element of $.message.issue.actions[*].descriptor.name must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;, &quot;INFO_REQUESTED&quot;, &quot;INFO_PROVIDED&quot;, &quot;INFO_NOT_AVAILABLE&quot;, &quot;RESOLUTION_PROPOSED&quot;, &quot;RESOLUTION_CASCADED&quot;, &quot;RESOLUTION_ACCEPTED&quot;, &quot;RESOLUTION_REJECTED&quot;]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ISSUE_DESCRIPTION</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_CODE</strong>: $.message.issue.descriptor.code must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_SHORT_DESC</strong>: $.message.issue.descriptor.short_desc must be present in the payload</p>
@@ -207,8 +357,12 @@
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_NAME_23</strong>: $.message.issue.descriptor.name must be present in the payload</p>
 </li>
-<li><p><strong>condition REQUIRED_MESSAGE_LAST_ACTION_ID</strong>: $.message.issue.last_action_id must be present in the payload</p>
+</ul>
 </li>
+<li><p><strong>ISSUE_ACTIONS</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
+<li><p><strong>Actions_Attributes_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_ID_25</strong>: $.message.issue.actions[*].id must be present in the payload</p>
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_CODE_26</strong>: $.message.issue.actions[*].descriptor.code must be present in the payload</p>
@@ -219,59 +373,35 @@
 </li>
 <li><p><strong>condition REQUIRED_MESSAGE_ACTION_BY</strong>: $.message.issue.actions[*].action_by must be present in the payload</p>
 </li>
+</ul>
+</li>
+<li><p><strong>Actions_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
+<ul>
 <li><p><strong>condition REQUIRED_MESSAGE_NAME_30</strong>: all of the following sub conditions must be met:</p>
 <ul>
 <li><strong>condition REQUIRED_MESSAGE_NAME_30.1</strong>: $.message.issue.actions[*].descriptor.name must be present in the payload</li>
 <li><strong>condition REQUIRED_MESSAGE_NAME_30.2</strong>: every element of $.message.issue.actions[*].descriptor.name must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;, &quot;INFO_REQUESTED&quot;, &quot;INFO_PROVIDED&quot;, &quot;INFO_NOT_AVAILABLE&quot;, &quot;RESOLUTION_PROPOSED&quot;, &quot;RESOLUTION_CASCADED&quot;, &quot;RESOLUTION_ACCEPTED&quot;, &quot;RESOLUTION_REJECTED&quot;]</li>
 </ul>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_STATUS</strong>: every element of $.message.issue.status must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_STATUS</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.status must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_LEVEL</strong>: every element of $.message.issue.level must be in [&quot;ISSUE&quot;, &quot;GREVIENCE&quot;, &quot;DISPUTE&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_LEVEL</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.level must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_REF_TYPE</strong>: every element of $.message.issue.refs[*].ref_type must be in [&quot;ORDER&quot;, &quot;ITEM&quot;, &quot;FULFILLMENT&quot;, &quot;TRANSACTION_ID&quot;, &quot;MESSAGE_ID&quot;, &quot;PROVIDER&quot;, &quot;COMPLAINT&quot;, &quot;ACTION&quot;, &quot;PAYMENT&quot;, &quot;CUSTOMER&quot;, &quot;AGENT&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_REF_TYPE</strong> can be skipped if the following conditions are met:</p>
+<li><p><strong>ISSUE_REFS</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition B</strong>: $.message.issue.refs[*].ref_type must <strong>not</strong> be present in the payload</li>
-</ul>
-</blockquote>
+<li><p><strong>condition REQUIRED_MESSAGE_REF_ID</strong>: $.message.issue.refs[*].ref_id must be present in the payload</p>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_TYPE</strong>: every element of $.message.issue.actors[*].type must be in [&quot;INERFACING_NP&quot;, &quot;COUNTERPARTY_NP&quot;, &quot;CASCADED_NP&quot;, &quot;PROVIDER&quot;, &quot;AGENT&quot;, &quot;CUSTOMER&quot;, &quot;INTERFACING_NP_GRO&quot;, &quot;COUNTERPARTY_NP_GRO&quot;, &quot;CASCADED_NP_GRO&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_TYPE</strong> can be skipped if the following conditions are met:</p>
+<li><p><strong>Refs_Enums_Tests</strong> : All the following sub conditions must pass as per the api requirement</p>
 <ul>
-<li><strong>condition B</strong>: $.message.issue.actors[*].type must <strong>not</strong> be present in the payload</li>
+<li><p><strong>condition REQUIRED_MESSAGE_REF_TYPE</strong>: all of the following sub conditions must be met:</p>
+<ul>
+<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.1</strong>: $.message.issue.refs[*].ref_type must be present in the payload</li>
+<li><strong>condition REQUIRED_MESSAGE_REF_TYPE.2</strong>: every element of $.message.issue.refs[*].ref_type must be in [&quot;ORDER&quot;, &quot;ITEM&quot;, &quot;FULFILLMENT&quot;, &quot;TRANSACTION_ID&quot;, &quot;MESSAGE_ID&quot;, &quot;PROVIDER&quot;, &quot;COMPLAINT&quot;, &quot;ACTION&quot;, &quot;PAYMENT&quot;, &quot;CUSTOMER&quot;, &quot;AGENT&quot;]</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_NAME</strong>: every element of $.message.issue.actions[*].descriptor.name must be in [&quot;OPEN&quot;, &quot;CLOSED&quot;, &quot;PROCESSING&quot;, &quot;RESOLVED&quot;, &quot;INFO_REQUESTED&quot;, &quot;INFO_PROVIDED&quot;, &quot;INFO_NOT_AVAILABLE&quot;, &quot;RESOLUTION_PROPOSED&quot;, &quot;RESOLUTION_CASCADED&quot;, &quot;RESOLUTION_ACCEPTED&quot;, &quot;RESOLUTION_REJECTED&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_NAME</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.actions[*].descriptor.name must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
-<li><p><strong>condition VALID_ENUM_MESSAGE_NAME_6</strong>: every element of $.message.issue.resolutions[*].descriptor.name must be in [&quot;REFUND&quot;, &quot;RETURN&quot;, &quot;REPLACEMENT&quot;, &quot;NO-ACTION&quot;, &quot;CANCEL&quot;, &quot;NOW-VISIBLE&quot;, &quot;PARENT&quot;]</p>
-<blockquote>
-<p>Note: <strong>Condition VALID_ENUM_MESSAGE_NAME_6</strong> can be skipped if the following conditions are met:</p>
-<ul>
-<li><strong>condition B</strong>: $.message.issue.resolutions[*].descriptor.name must <strong>not</strong> be present in the payload</li>
 </ul>
-</blockquote>
 </li>
 </ul>
 </li>

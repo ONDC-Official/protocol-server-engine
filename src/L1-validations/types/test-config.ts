@@ -10,7 +10,7 @@ export type validationOutput = {
 
 /*
 {% comment %} export type ExternalData = {
-    transaction_id?: string[];
+    _SELF?: string[];
 }; {% endcomment %}
 */
 
