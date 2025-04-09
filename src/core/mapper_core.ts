@@ -227,6 +227,9 @@ const createPayload = (
     try {
       // eval(item.value)==false ||
       if ( eval(item.value)  && (item.check ? eval(item.check) : true))
+        if(eval(item.value)=="boolean_false"){
+          item.value=false
+        }
         createNestedField(
           payload,
           item.beckn_key,
