@@ -123,6 +123,14 @@ const buildContext = (session: any, action: any) => {
       value: "session.cityCode",
     },
     {
+      beckn_key: "country",
+      value: "session.country_ret",
+    },
+    {
+      beckn_key: "city",
+      value: "session.city_ret",
+    },
+    {
       beckn_key: "transaction_id",
       value: "session.currentTransactionId",
     },
