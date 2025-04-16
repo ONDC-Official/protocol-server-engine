@@ -123,6 +123,14 @@ const buildContext = (session: any, action: any) => {
       value: "session.cityCode",
     },
     {
+      beckn_key: "country",
+      value: "session.country_ret",
+    },
+    {
+      beckn_key: "city",
+      value: "session.city_ret",
+    },
+    {
       beckn_key: "transaction_id",
       value: "session.currentTransactionId",
     },
@@ -227,6 +235,9 @@ const createPayload = (
     try {
       // eval(item.value)==false ||
       if ( eval(item.value)  && (item.check ? eval(item.check) : true))
+        if(eval(item.value)=="boolean_false"){
+          item.value=false
+        }
         createNestedField(
           payload,
           item.beckn_key,

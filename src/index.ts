@@ -1,9 +1,10 @@
+require("dotenv").config();
 import express from "express";
 import bodyParser from "body-parser";
 import { router } from "./router/router";
 const app = express();
 import connectDB from "./core/db";
-require("dotenv").config();
+
 
 import { configLoader } from "./core/loadConfig";
 import { parseBoolean } from "./utils/utils";
