@@ -27,11 +27,16 @@ const getPublicKey = async (header) => {
     const subscriberId = extractSubscriberIdukId.subscriberID;
     const ukId = extractSubscriberIdukId.uniquePublicKeyID;
     let publicKey;
+    const body = {
+      subscriber_id: subscriberId,
+      ukId: ukId,
+    }
+    const lookupHeader = await generateHeader(body)
     await axios
-      .post(LOOKUP_URI, {
-        subscriber_id: subscriberId,
-        ukId: ukId,
-      })
+      .post(LOOKUP_URI,body,config = {
+        headers: {
+          "Authorization": lookupHeader
+  }})
       .then((response) => {
         response = response.data;
         publicKey = response[0]?.signing_public_key;
