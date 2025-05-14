@@ -3,18 +3,18 @@ const { checkHealth, JsonResponseToText } = require( "../utils/healthCheck");
   try {
     // Define the current service and its dependencies
     const currentService = {
-      name: "Protocol Server Engine"
+      name: "PROTOCOL_SERVER_ENGINE"
     };
 
     const dependencyServices = [
       {
-        name: "Seller Mock Engine",
+        name: "SELLER_MOCK_ENGINE",
         url:
           process.env.BACKEND_SERVER_URL + "/health-self" ||
           "http://localhost:7202/health-self",
       },
       {
-        name: "Mock Server Utility",
+        name: "MOCK_SERVER_UTILITY",
         url: process.env.MOCK_SERVER_UTILITY+"/health-self" || "http://localhost:3000",
       },
     ];
