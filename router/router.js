@@ -4,6 +4,7 @@ const {
   businessToBecknWrapper,
   updateSession,
 } = require("../controller/index");
+const {healthCheckAPI} = require("../controller/health.controller")
 
 // buss > beckn
 router.post("/createPayload", businessToBecknWrapper);
@@ -13,8 +14,11 @@ router.post("/ondc/:method", becknToBusiness);
 
 router.post("/updateSession", updateSession);
 
-router.get("/health", (req, res) => {
-  res.send({ status: "working" });
+router.get("/health", healthCheckAPI);
+
+// self health check route
+router.get("/health-self", (req, res) => {
+  res.status(200).send(`STATUS:UP,TIMESTAMP:${new Date().toISOString()}`);
 });
 
 module.exports = router;
