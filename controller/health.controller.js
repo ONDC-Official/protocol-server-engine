@@ -3,8 +3,7 @@ const { checkHealth, JsonResponseToText } = require( "../utils/healthCheck");
   try {
     // Define the current service and its dependencies
     const currentService = {
-      name: "Protocol Server Engine",
-      url: "http://localhost:7201/health-self", // check current service by session api route
+      name: "Protocol Server Engine"
     };
 
     const dependencyServices = [
@@ -15,8 +14,8 @@ const { checkHealth, JsonResponseToText } = require( "../utils/healthCheck");
           "http://localhost:7202/health-self",
       },
       {
-        name: "Mock UI",
-        url: process.env.MOCK_UI_URL || "http://localhost:3000",
+        name: "Mock Server Utility",
+        url: process.env.MOCK_SERVER_UTILITY+"/health-self" || "http://localhost:3000",
       },
     ];
 
