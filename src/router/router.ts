@@ -2,6 +2,7 @@ import express from "express";
 import { Request, Response } from "express";
 
 export const router = express.Router();
+import { healthCheckAPI } from "../controller/health.controller";
 import {
   becknToBusiness,
   businessToBecknWrapper,
@@ -18,10 +19,12 @@ router.post("/ondc/:method", becknToBusiness);
 
 router.post("/updateSession", updateSession);
 
-router.get("/health", (req: Request, res: Response) => {
-  logger.info("/health api controller");
-  res.send({ status: "working" });
-  logger.info("/health api executed");
+// route for check halth of the service
+router.get("/health", healthCheckAPI);
+
+// self health check route
+router.get("/health-self", (req: Request, res: Response) => {
+  res.status(200).send(`STATUS:UP,TIMESTAMP:${new Date().toISOString()}`);
 });
 
 router.get("/session", getsession);

@@ -5,7 +5,7 @@ import {
 import { GenericObject } from "ondc-crypto-sdk-nodejs/lib/types";
 import axios from "axios";
 
-const LOOKUP_URI = process.env.ondc_LOOKUP_URI,
+const LOOKUP_URI = process.env.LOOKUP_URI,
   PRIVATE_KEY = process.env.PRIVATE_KEY,
   BAPID = process.env.SUBSCRIBER_ID,
   UNIQUE_KEY = process.env.SUBSCRIBER_UNIQUE_KEY;
