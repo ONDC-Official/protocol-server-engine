@@ -21,6 +21,7 @@ const { checkHealth, JsonResponseToText } = require( "../utils/healthCheck");
 
     const healthStatus = await checkHealth(currentService, dependencyServices);
     const textResponse = JsonResponseToText(healthStatus);
+    res.setHeader('Content-Type', 'text/plain');
     res.status(healthStatus.statusCode).send(textResponse);
   } catch (error) {
     console.error("Error in healthCheckAPI:", error);
