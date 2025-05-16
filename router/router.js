@@ -10,7 +10,7 @@ const {healthCheckAPI} = require("../controller/health.controller")
 router.post("/createPayload", businessToBecknWrapper);
 
 // bkn > buss
-router.post("/ondc/:method", becknToBusiness);
+router.post("/:method", becknToBusiness);
 
 router.post("/updateSession", updateSession);
 
