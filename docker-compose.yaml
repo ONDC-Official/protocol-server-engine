@@ -1,7 +1,7 @@
 services:
   app:
-    image: 577638354424.dkr.ecr.ap-south-1.amazonaws.com/fis-protocol-server-engine:latest
-    container_name: ${CONTAINER_NAME:-protocol-server-engine}
+    image: 577638354424.dkr.ecr.ap-south-1.amazonaws.com/trv-protocol-server-engine:latest
+    container_name: trv-protocol-server-engine
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
     env_file:
