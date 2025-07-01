@@ -1,9 +1,8 @@
 version: '3.8'
-
 services:
-  protocol-server-engine:
+  app:
+    image: 577638354424.dkr.ecr.ap-south-1.amazonaws.com/dev/igm-protocol-server-engine:latest  # Will be dynamically updated by Jenkins
     container_name: ${SERVICE_NAME}
-    restart: always
-    build: .
     ports:
       - "${PORT}:${PORT}"
+    restart: always
