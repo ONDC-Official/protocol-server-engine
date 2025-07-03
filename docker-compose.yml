@@ -1,9 +1,8 @@
-version: '3.8'
-
+version: "3.8"
 services:
-  protocol-server-engine:
+  app:
+    image: 577638354424.dkr.ecr.ap-south-1.amazonaws.com/staging/igm-protocol-server-engine:latest
     container_name: ${SERVICE_NAME}
-    restart: always
-    build: .
     ports:
       - "${PORT}:${PORT}"
+    restart: always
