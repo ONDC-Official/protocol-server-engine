@@ -234,14 +234,15 @@ const createPayload = (
   config.map((item: any) => {
     try {
       // eval(item.value)==false ||
-      if ( eval(item.value)  && (item.check ? eval(item.check) : true))
-        if(eval(item.value)=="boolean_false"){
-          item.value=false
+      let evaluatedValue = eval(item.value);
+      if ( evaluatedValue  && (item.check ? eval(item.check) : true))
+        if(evaluatedValue=="boolean_false"){
+          evaluatedValue=false
         }
         createNestedField(
           payload,
           item.beckn_key,
-          item.compute ? eval(item.compute) : eval(item.value)
+          item.compute ? eval(item.compute) : evaluatedValue
         );
     } catch (err) {
       console.log("error", err);
